@@ -4,7 +4,7 @@ console.log("Submitter.js loaded");
 const click_submit = (buttons) => {
   // loop through all buttons on the page
   for (let i = 0; i < buttons.length; i++) {
-    if (buttons[i].innerHTML === "Submit") {
+    if (buttons[i].innerHTML.toLowerCase() === "submit") {
       // if the button is a submit button, click it
       buttons[i].click();
       break;
@@ -15,7 +15,7 @@ const click_submit = (buttons) => {
 const click_ok = (buttons) => {
   // loop through all buttons on the page
   for (let i = 0; i < buttons.length; i++) {
-    if (buttons[i].innerHTML === "OK") {
+    if (buttons[i].innerHTML.toLowerCase() === "ok") {
       // if the button is a submit button, click it
       buttons[i].click();
       break;
