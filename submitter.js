@@ -1,9 +1,20 @@
+// initialization message
+console.log("Submitter.js loaded");
 
-document.addEventListener('keypress', (e) => {
-var button = document.getElementsByClassName("a-btn-primary a-btn-sm sc-jTYCaT bkQLTO a-keyboard-hover-only-div");
-button = button.item(0);
-    if(e.key === "Enter"){
-    console.log("The {Enter} was pressed. Submitter will submit the form.");
-    button.click();
+//script runs on keypress
+document.addEventListener("keypress", (e) => {
+  // debuggin
+  // console.log($("button"));
+
+  // jquery to get all buttons
+  const buttons = $("button");
+
+  // loop through all buttons on the page
+  for (let i = 0; i < buttons.length; i++) {
+    if (buttons[i].innerHTML === "Submit") {
+      // if the button is a submit button, click it
+      buttons[i].click();
+      break;
     }
+  }
 });

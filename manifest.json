@@ -1,21 +1,15 @@
 {
-
-    "manifest_version": 2,
-    "name": "submitter",
-    "version": "1.0",
-  
-    "description": "clicks the submit button",
-  
-    "icons": {
-      "myicon": "icons/myicon.png"
-    },
-  
-    "content_scripts": [
-      {
-        "matches": ["*://*.localhost/*"],
-        "js": ["submitter.js"]
-      }
-    ]
-  
-  }
-  
+  "manifest_version": 2,
+  "name": "submitter",
+  "version": "1.0",
+  "background": {
+    "scripts": ["thirdParty/jquery-3.6.3.js", "submitter.js"]
+  },
+  "description": "clicks the submit button",
+  "content_scripts": [
+    {
+      "js": ["jquery.min.js", "submitter.js"],
+      "matches": ["http://*/*", "https://*/*"]
+    }
+  ]
+}
