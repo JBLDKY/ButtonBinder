@@ -1,11 +1,11 @@
 {
   "manifest_version": 2,
-  "name": "submitter",
-  "version": "1.0",
-  "description": "clicks the submit button",
+  "name": "ButtonBinder",
+  "version": "1.2",
+  "description": "Bind buttons to keyboard shortcuts!",
   "content_scripts": [
     {
-      "js": ["jquery.min.js", "submitter.js"],
+      "js": ["jquery.min.js", "submitter.js", "options.js"],
       "matches": ["http://*/*", "https://*/*"]
     }
   ],
@@ -23,7 +23,7 @@
   "permissions": ["storage"],
   "browser_specific_settings": {
     "gecko": {
-      "id": "ButtonBinder@gmail.com"
+      "id": "buttonbinder.jbldsky@gmail.com"
     }
   }
 }

@@ -1,20 +1,59 @@
-function saveOptions(e) {
-  e.preventDefault();
-  formData = document.getElementById("my-form").elements;
-  setUserSettings(formData);
+// on save button click, save user settings to storage
+function saveOptions(event) {
+  // get all input fields
+  const bindings = $("[name^=binding]");
+  // json style object to hold user settings
+  const test_settings = {};
+
+  // loop through all input fields
+  for (let i = 1; i < bindings.length; i++) {
+    // initialize object to hold key/value pairs
+    // const obj = [];
+    // cache both key and value for clean code purposes
+    const button = bindings[i - 1].value;
+    const keypress = bindings[i].value;
+    // skip to next pair if current fields were left empty
+    if (button === "" || keypress === "") continue;
+    // add key/value pair to object
+    const obj = [button, keypress];
+    // add object to test_settings object
+    test_settings[bindings[i].name] = obj;
+  }
+
+  // save to storage
+  browser.storage.sync.set({
+    keybindings: test_settings,
+  });
+
+  // prevent redirect
+  event.preventDefault();
 }
 
-function setUserSettings(formData) {
-  const userSettings = {
-    binding1: [formData[0].value, formData[1].value],
-    binding2: [formData[2].value, formData[3].value],
-    binding3: [formData[4].value, formData[5].value],
-    binding4: [formData[6].value, formData[7].value],
-    binding5: [formData[8].value, formData[9].value],
-    binding6: [formData[10].value, formData[11].value],
-    binding7: [formData[12].value, formData[13].value],
-    binding8: [formData[14].value, formData[15].value],
-  };
+// on page load, get user settings from storage
+function restoreOptions() {
+  // get user settings from storage
+  let gettingItem = browser.storage.sync.get("keybindings");
+  gettingItem.then((res) => {
+    // wait for promise to resolve
+    const result = res.keybindings;
+    // get all NON-EMPTY keybindings
+    const names = Object.keys(result);
+    names.forEach((name) => {
+      // key is the button text
+      const key = result[name][0];
+      // value is the keypress
+      const value = result[name][1];
+      // index is related to the unique id of the input fields
+      const index = name.slice(-1);
+
+      // set the input fields to the user settings
+      document.querySelector(`#button${index}`).value = key; // button
+      document.querySelector(`#key${index}`).value = value; // keypress
+    });
+  });
 }
 
+// on page load, GET & SET user settings to saved settings
+document.addEventListener("DOMContentLoaded", restoreOptions);
+// on submit button click, SAVE user settings to storage
 document.querySelector("form").addEventListener("submit", saveOptions);
