@@ -1,14 +1,8 @@
 // on save button click, save user settings to storage
-function saveOptions(event) {
-  // get all input fields
-  const bindings = $("[name^=binding]");
-  // json style object to hold user settings
-  const test_settings = {};
-
+function structureBindings(bindings) {
+  const testSettings = {};
   // loop through all input fields
   for (let i = 1; i < bindings.length; i++) {
-    // initialize object to hold key/value pairs
-    // const obj = [];
     // cache both key and value for clean code purposes
     const button = bindings[i - 1].value;
     const keypress = bindings[i].value;
@@ -17,8 +11,15 @@ function saveOptions(event) {
     // add key/value pair to object
     const obj = [button, keypress];
     // add object to test_settings object
-    test_settings[bindings[i].name] = obj;
+    testSettings[bindings[i].name] = obj;
   }
+  return testSettings;
+}
+function saveOptions(event) {
+  // get all input fields
+  const bindings = $("[name^=binding]");
+  // json style object to hold user settings
+  const test_settings = structureBindings(bindings);
 
   // save to storage
   browser.storage.sync.set({

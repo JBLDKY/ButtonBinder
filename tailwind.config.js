@@ -1,11 +1,14 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: ["./*.{html,js}"],
+  content: ['./*.{html,js}'],
   theme: {
-    colors: {
-      "firefox-bg": "#25212b",
+    extend: {
+      colors: {
+        gray: {
+          firefoxbg: '#25212b',
+        },
+      },
     },
-    extend: {},
   },
   plugins: [],
-};
+}

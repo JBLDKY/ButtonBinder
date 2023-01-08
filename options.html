@@ -4,9 +4,9 @@
     <link href="/dist/output.css" rel="stylesheet" />
   </head>
   <body >
-    <form class="bg-firefox-bg px-4" id="userSettings">
+    <form class="bg-gray-firefoxbg px-4" id="userSettings">
       <div class="py-1">
-        <input class="placeholder-gray-300 px-5 py-2 font-semibold text-black border border-b-4 border-r-4 border-black rounded-lg shadow-lg hover:shadow-sm" type="text" id="button1" name="binding1" placeholder="Button Text"/>
+        <input class="placeholder-gray-300 px-5 py-2 font-semibold text-black border border-b-4 border-r-4 border-black rounded-lg shadow-lg focus:underline decoration-solid" type="text" id="button1" name="binding1" placeholder="Button Text"/>
         <input class="placeholder-gray-300 px-5 py-2 font-semibold text-black border border-b-4 border-r-4 border-black rounded-lg shadow-lg hover:shadow-sm" type="text" id="key1" name="binding1" placeholder="Your Keybinding" />
       </div>
       <div class="py-1">
@@ -35,11 +35,14 @@
       </div>
       <div class="py-1">
         <input class="placeholder-gray-300 px-5 py-2 font-semibold text-black border border-b-4 border-r-4 border-black rounded-lg shadow-lg hover:shadow-sm" type="text" id="button8" name="binding8" />
-        <input class="placeholder-gray-300 px-5 py-2 font-semibold text-black border border-b-4 border-r-4 border-black rounded-lg shadow-lg hover:shadow-sm" type="text" id="key8" name="binding8" />
+        <input class="placeholder-gray-300 px-5 py-2 font-semibold text-black border border-b-4 border-r-4 border-black rounded-lg shadow-lg hover:box" type="text" id="key8" name="binding8" />
       </div>
-      <div class="py-1">
-      <button class="px-5 py-2 font-medium bg-yellow-200 text-white border border-b-4 border-r-4 border-pink-600 rounded-lg shadow-lg hover:shadow-sm" type="submit">Save</button>
-      </div>
+      <div class="py-3">
+      <button class="px-5 py-2 font-semibold bg-white border border-b-4 border-r-4 border-black rounded-lg hover:text-white hover:shadow-[inset_13rem_0_0_0] hover:shadow-black duration-[400ms, 700ms] hover:white duration-[1000ms,500ms] hover:border-white transition-[color,box-shadow, border] active:bg-gray-300" type="submit" id="saveButton" name="save">
+        Save</button>
+   
+    </div>
+    </div>
     </form>
     <script src="jquery.min.js"></script>
     <script src="options.js"></script>
