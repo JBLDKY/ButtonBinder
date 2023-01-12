@@ -1,29 +1,18 @@
 {
-  "manifest_version": 2,
+  "manifest_version": 3,
   "name": "ButtonBinder",
   "version": "1.2",
   "description": "Bind buttons to keyboard shortcuts!",
+  "options_page": "options.html",
   "content_scripts": [
     {
-      "js": ["jquery.min.js", "submitter.js", "options.js"],
-      "matches": ["http://*/*", "https://*/*"]
+      "js": [ "jquery.min.js", "submitter.js", "options.js"],
+      "type": "module",
+      "matches": ["http://*/*", "https://*/*"],
+      "run_at": "document_end"
     }
   ],
-  "browser_action": {
-    "default_icon": {
-      "19": "icons/myicon.png"
-    },
-    "default_title": "Whereami?"
-  },
-  "options_ui": {
-    "page": "options.html",
-    "browser_style": true,
-    "chrome_style": true
-  },
-  "permissions": ["storage"],
-  "browser_specific_settings": {
-    "gecko": {
-      "id": "{70b5c714-5c1a-4f94-81f4-f6bdbf0ef9e1}"
-    }
-  }
+  "permissions": [
+  "storage"
+  ]
 }

@@ -22,7 +22,7 @@ function saveOptions(event) {
   const test_settings = structureBindings(bindings);
 
   // save to storage
-  browser.storage.sync.set({
+  chrome.storage.sync.set({
     keybindings: test_settings,
   });
 
@@ -33,7 +33,7 @@ function saveOptions(event) {
 // on page load, get user settings from storage
 function restoreOptions() {
   // get user settings from storage
-  let gettingItem = browser.storage.sync.get("keybindings");
+  let gettingItem = chrome.storage.sync.get(["keybindings"]);
   gettingItem.then((res) => {
     // wait for promise to resolve
     const result = res.keybindings;

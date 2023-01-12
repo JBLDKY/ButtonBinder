@@ -1,6 +1,5 @@
 // initialization message
 console.log("ButtonBinder v1.2 is active");
-
 // Error handler
 function onError(error) {
   info(`Error: ${error}`);
@@ -40,9 +39,10 @@ function matchKeypress(keypress, userSettings) {
 }
 
 // ASYNC
-const getting = browser.storage.sync.get("keybindings");
-getting.then(onGot, onError).then((userSettings) => {
+
+const getting = chrome.storage.sync.get(["keybindings"])
+chrome.storage.sync.get(["keybindings"]).then(onGot, onError).then((userSettings) => {
   document.addEventListener("keypress", (e) => {
     matchKeypress(e.key, userSettings);
   });
-});
+})
