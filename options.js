@@ -54,6 +54,47 @@ function restoreOptions() {
   });
 }
 
+function hideDivs(){
+let divOne = document.querySelector("#set-one")
+let divTwo = document.querySelector("#set-two")
+let divThree = document.querySelector("#set-three")
+let divFour = document.querySelector("#set-four")
+let divFive = document.querySelector("#set-five")
+let divSix = document.querySelector("#set-six")
+let divSeven = document.querySelector("#set-seven")
+let divEight = document.querySelector("#set-eight")
+let buttonOne = document.querySelector("#button1")
+let keyOne = document.querySelector("#key1")
+let divs = [divTwo, divThree, divFour, divFive, divSix, divSeven, divEight]
+divs.forEach((div) => {
+  div.style.display = "none";
+})
+}
+function renderDivs(){
+let divOne = document.querySelector("#set-one")
+let divTwo = document.querySelector("#set-two")
+let divThree = document.querySelector("#set-three")
+let divFour = document.querySelector("#set-four")
+let divFive = document.querySelector("#set-five")
+let divSix = document.querySelector("#set-six")
+let divSeven = document.querySelector("#set-seven")
+let divEight = document.querySelector("#set-eight")
+let buttonOne = document.querySelector("#button1")
+let keyOne = document.querySelector("#key1")
+let divs = [divTwo, divThree, divFour, divFive, divSix, divSeven, divEight]
+divs.forEach((div) => {
+  console.log(div.style.display)
+  div.style.display = "none";
+})
+
+if(buttonOne.value !== "" || keyOne.value !== null){
+  divTwo.style.display = "block"
+}
+}
+
+
+document.addEventListener("keypress", renderDivs);
+document.addEventListener("DOMContentLoaded", hideDivs);
 // on page load, GET & SET user settings to saved settings
 document.addEventListener("DOMContentLoaded", restoreOptions);
 // on submit button click, SAVE user settings to storage
