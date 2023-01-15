@@ -2,7 +2,7 @@
 function structureBindings(bindings) {
   const testSettings = {};
   // loop through all input fields
-  for (let i = 1; i < bindings.length; i++) {
+  for (let i = 1; i < bindings.length; i += 2) {
     // cache both key and value for clean code purposes
     const button = bindings[i - 1].value;
     const keypress = bindings[i].value;
@@ -15,6 +15,7 @@ function structureBindings(bindings) {
   }
   return testSettings;
 }
+
 function saveOptions(event) {
   // get all input fields
   const bindings = $("[name^=binding]");
@@ -51,51 +52,43 @@ function restoreOptions() {
       document.querySelector(`#button${index}`).value = key; // button
       document.querySelector(`#key${index}`).value = value; // keypress
     });
+    // after user settings are loaded, hide the unused divs
+    dynamicInputFields();
   });
 }
 
-function hideDivs(){
-let divOne = document.querySelector("#set-one")
-let divTwo = document.querySelector("#set-two")
-let divThree = document.querySelector("#set-three")
-let divFour = document.querySelector("#set-four")
-let divFive = document.querySelector("#set-five")
-let divSix = document.querySelector("#set-six")
-let divSeven = document.querySelector("#set-seven")
-let divEight = document.querySelector("#set-eight")
-let buttonOne = document.querySelector("#button1")
-let keyOne = document.querySelector("#key1")
-let divs = [divTwo, divThree, divFour, divFive, divSix, divSeven, divEight]
-divs.forEach((div) => {
-  div.style.display = "none";
-})
-}
-function renderDivs(){
-let divOne = document.querySelector("#set-one")
-let divTwo = document.querySelector("#set-two")
-let divThree = document.querySelector("#set-three")
-let divFour = document.querySelector("#set-four")
-let divFive = document.querySelector("#set-five")
-let divSix = document.querySelector("#set-six")
-let divSeven = document.querySelector("#set-seven")
-let divEight = document.querySelector("#set-eight")
-let buttonOne = document.querySelector("#button1")
-let keyOne = document.querySelector("#key1")
-let divs = [divTwo, divThree, divFour, divFive, divSix, divSeven, divEight]
-divs.forEach((div) => {
-  console.log(div.style.display)
-  div.style.display = "none";
-})
-
-if(buttonOne.value !== "" || keyOne.value !== null){
-  divTwo.style.display = "block"
-}
+function dynamicInputFields() {
+  // This function is run onChange events & on user settings load
+  // get all divs fields
+  const divs = Array.from($("[id*=set]"));
+  // get all NON-EMPTY keybindings
+  const testSettings = structureBindings($("[name^=binding]"));
+  const usedDivs = Object.keys(testSettings).length;
+  for (let i = 0; i < divs.length; i++) {
+    if (i < usedDivs + 1) {
+      // show all used divs + 1
+      divs[i].style.display = "block";
+    } else if (
+      // don't delete divs that have been filled out
+      divs[i].children[0].value === "" &&
+      divs[i].children[1].value === ""
+    ) {
+      // hide all unused divs
+      divs[i].style.display = "none";
+    }
+  }
 }
 
-
-document.addEventListener("keypress", renderDivs);
-document.addEventListener("DOMContentLoaded", hideDivs);
 // on page load, GET & SET user settings to saved settings
 document.addEventListener("DOMContentLoaded", restoreOptions);
 // on submit button click, SAVE user settings to storage
 document.querySelector("form").addEventListener("submit", saveOptions);
+// on page load, add onchange listeners to all input fields
+document.addEventListener("DOMContentLoaded", addOnChangeListener);
+
+// add onchange listeners to all input fields
+function addOnChangeListener() {
+  document.querySelectorAll("input").forEach((element) => {
+    element.addEventListener("change", dynamicInputFields);
+  });
+}

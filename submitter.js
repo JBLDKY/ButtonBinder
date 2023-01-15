@@ -1,5 +1,5 @@
 // initialization message
-console.log("ButtonBinder v1.2 is active");
+console.log("ButtonBinder v1.2.1 is active");
 // Error handler
 function onError(error) {
   info(`Error: ${error}`);
