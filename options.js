@@ -47,7 +47,6 @@ function restoreOptions() {
       const value = result[name][1];
       // index is related to the unique id of the input fields
       const index = name.slice(-1);
-
       // set the input fields to the user settings
       document.querySelector(`#button${index}`).value = key; // button
       document.querySelector(`#key${index}`).value = value; // keypress
@@ -82,7 +81,9 @@ function dynamicInputFields() {
 // on page load, GET & SET user settings to saved settings
 document.addEventListener("DOMContentLoaded", restoreOptions);
 // on submit button click, SAVE user settings to storage
+document.addEventListener("DOMContentLoaded", () => {
 document.querySelector("form").addEventListener("submit", saveOptions);
+})
 // on page load, add onchange listeners to all input fields
 document.addEventListener("DOMContentLoaded", addOnChangeListener);
 

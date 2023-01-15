@@ -6,13 +6,11 @@
   "options_page": "options.html",
   "content_scripts": [
     {
-      "js": [ "jquery.min.js", "submitter.js", "options.js"],
+      "js": ["jquery.min.js", "submitter.js", "options.js"],
       "type": "module",
       "matches": ["http://*/*", "https://*/*"],
       "run_at": "document_end"
     }
   ],
-  "permissions": [
-  "storage"
-  ]
+  "permissions": ["storage"]
 }
