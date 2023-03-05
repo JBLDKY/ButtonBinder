@@ -1,10 +1,8 @@
-// initialization message
 // Error handler
 function onError(error) {
   info(`Error: ${error}`);
 }
 
-// async
 function onGot() {
   const userSettings = getting;
   return userSettings;
@@ -16,21 +14,17 @@ function debug(lastMouseOverInnerText) {
     buttons[q].innerText = buttons[q].bbid;
   }
   const contextMenu = document.querySelector(".context");
-  chrome.storage.sync.get(["keybindings"]).then((res) => {
-  });
+  chrome.storage.sync.get(["keybindings"]).then((res) => {});
 }
+
 // keypress handler
-const click_button = (buttonName, lastMouseOverInnerText) => {
-  // if buttonName is undefined, return
+const clickButton = (buttonName, lastMouseOverInnerText) => {
   if (buttonName === undefined) return;
-  // get all buttons on the page (jquery)
   const buttons = $("button");
-  // loop through all buttons on the page
   for (let q = 0; q < buttons.length; q++) {
     if (
       buttons[q].bbid.trim().toLowerCase() == buttonName.trim().toLowerCase()
     ) {
-      // if the button is matches, click it
       buttons[q].click();
     }
   }
@@ -49,10 +43,9 @@ function matchKeypress(keypress, userSettings, lastMouseOverInnerText) {
     keyMatcherObject[x[1]] = x[0];
   });
 
-  click_button(keyMatcherObject[keypress], lastMouseOverInnerText);
+  clickButton(keyMatcherObject[keypress], lastMouseOverInnerText);
 }
 
-// ASYNC
 const lastMouseOverInnerText = "";
 const getting = chrome.storage.sync.get(["keybindings"]);
 chrome.storage.sync

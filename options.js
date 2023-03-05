@@ -1,55 +1,93 @@
 // on save button click, save user settings to storage
-function structureBindings(bindings) {
-  const testSettings = {};
-  // loop through all input fields
+function toObject(bindings) {
+  /**
+   * Restructure the settings as imported from browser storage
+   * to a JSON-like Object. Buttons and bindings in the array are stored 1 dimensionally
+   * so that every button is followed by its binding.
+   * @param {Array} Array containing the result from a Jquery. \
+   * Contains all user input settings from top left (index 0) to bottom right (index -1).
+   *
+   * Todo: Implement the following structure:
+   * {"website url1":
+   *  [
+   *    {
+   *      "binding1":
+   *        ["button1": "binding1"],
+   *    },
+   *    {
+   *      "binding2":
+   *        ["button2": "binding2"],
+   *    }
+   *  ]
+   * }
+   *
+   * @param return: Object containing the bindings: {"binding1": ["button1", "binding1"]}
+   *
+   **/
+  const userKeybindings = {};
+
   for (let i = 1; i < bindings.length; i += 2) {
-    // cache both key and value for clean code purposes
+    if (bindings[i - 1].value === "" || bindings[i] === "") continue;
+
     const button = bindings[i - 1].value;
-    const keypress = bindings[i].value;
-    // skip to next pair if current fields were left empty
-    if (button === "" || keypress === "") continue;
-    // add key/value pair to object
-    const obj = [button, keypress];
+    const binding = bindings[i].value;
+
+    const bindSet = [button, binding]; // a bindset is a combination of button with binding
     // add object to test_settings object
-    testSettings[bindings[i].name] = obj;
+    userKeybindings[bindings[i].name] = bindSet;
   }
-  return testSettings;
+
+  return userKeybindings;
 }
 
-function saveOptions(event) {
-  // get all input fields
+function saveHandler(event) {
+  /**
+   * Handler for saving a user's settings.
+   * Listens for an event (specifically a click on the save button),
+   * jqueries the settings page to get all bindings in a list and uses
+   * toObject to process them.
+   *
+   * then uses the browser's storage sync to store the userKeybindings Object.
+   * To retrieve the keybindings, use the object key "keybindings".
+   *
+   */
   const bindings = $("[name^=binding]");
-  // json style object to hold user settings
-  const test_settings = structureBindings(bindings);
+  const userKeybindings = toObject(bindings);
 
-  // save to storage
   chrome.storage.sync.set({
-    keybindings: test_settings,
+    keybindings: userKeybindings,
   });
 
-  // prevent redirect
+  // prevents an ugly graphical abberration, probably caused by some redirect
   event.preventDefault();
 }
 
-// on page load, get user settings from storage
 function restoreOptions() {
-  // get user settings from storage
+  /**
+   * Whenever the DOMContentLoaded event is triggered,
+   * we load everything required by buttonBinder to function.
+   *
+   **/
   let gettingItem = chrome.storage.sync.get(["keybindings"]);
+
   gettingItem.then((res) => {
-    // wait for promise to resolve
-    const result = res.keybindings;
-    // get all NON-EMPTY keybindings
-    const names = Object.keys(result);
-    names.forEach((name) => {
-      // key is the button text
-      const key = result[name][0];
-      // value is the keypress
-      const value = result[name][1];
-      // index is related to the unique id of the input fields
-      const index = name.slice(-1);
-      // set the input fields to the user settings
-      document.querySelector(`#button${index}`).value = key; // button
-      document.querySelector(`#key${index}`).value = value; // keypress
+    const userKeybindings = res.keybindings;
+    const bindSetsNames = Object.keys(userKeybindings );
+
+
+    // Iterate over all the keys of our userKeybindings
+    // so that we can put them back in the form the way
+    // the user left them. To preserve the order, 
+    // the bindings/bindsets/buttons have a number attached to them
+    // at index -1.
+    bindSetsNames.forEach((x) => {
+      const button = userKeybindings[x][0];
+      const binding = userKeybindings[x][1];
+      const index = x.slice(-1);
+
+      // set the input fields to contain the values the user left
+      document.querySelector(`#button${index}`).value = button; 
+      document.querySelector(`#binding${index}`).value = binding;
     });
     // after user settings are loaded, hide the unused divs
     dynamicInputFields();
@@ -61,7 +99,7 @@ function dynamicInputFields() {
   // get all divs fields
   const divs = Array.from($("[id*=set]"));
   // get all NON-EMPTY keybindings
-  const testSettings = structureBindings($("[name^=binding]"));
+  const testSettings = toObject($("[name^=bindset]"));
   const usedDivs = Object.keys(testSettings).length;
   for (let i = 0; i < divs.length; i++) {
     if (i < usedDivs + 1) {
@@ -82,8 +120,8 @@ function dynamicInputFields() {
 document.addEventListener("DOMContentLoaded", restoreOptions);
 // on submit button click, SAVE user settings to storage
 document.addEventListener("DOMContentLoaded", () => {
-document.querySelector("form").addEventListener("submit", saveOptions);
-})
+  document.querySelector("form").addEventListener("submit", saveHandler);
+});
 // on page load, add onchange listeners to all input fields
 document.addEventListener("DOMContentLoaded", addOnChangeListener);
 
