@@ -37,7 +37,7 @@
 
 // Error handler
 function onError(error) {
-  info(`Error: ${error}`);
+  console.log(`Error: ${error}`);
 }
 
 function onGot() {
