@@ -20,7 +20,6 @@ function toObject(bindings) {
    *    }
    *  ]
    * }
-   *
    * @param return: Object containing the bindings: {"binding1": ["button1", "binding1"]}
    *
    **/
@@ -51,7 +50,7 @@ function saveHandler(event) {
    * To retrieve the keybindings, use the object key "keybindings".
    *
    */
-  const bindings = $("[name^=binding]");
+  const bindings = $("[name^=bindset]");
   const userKeybindings = toObject(bindings);
 
   chrome.storage.sync.set({
