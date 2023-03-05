@@ -15,33 +15,9 @@ function debug(lastMouseOverInnerText) {
   for (let q = 0; q < buttons.length; q++) {
     buttons[q].innerText = buttons[q].bbid;
   }
-  console.log("~~~VERSION~~~");
-  console.log("ButtonBinder v1.2.1");
-  console.log("~~~BUTTONS ON THIS PAGE~~~");
-  console.log($("button"));
-  console.log("~~~KEYBINDINGS~~~");
   const contextMenu = document.querySelector(".context");
-  console.log("~~~CONTEXTMENU~~~");
-  console.log(contextMenu);
   chrome.storage.sync.get(["keybindings"]).then((res) => {
-    console.log(res);
   });
-  console.log(
-    `~~~INNERTEXT OF THE BUTTON ON MOUSEOVER~~~\n${$("button").mouseover(
-      function (mouseover) {
-        const mouseOverInnerText = mouseover.target.bbid;
-        if (
-          mouseOverInnerText !== undefined ||
-          mouseOverInnerText !== lastMouseOverInnerText ||
-          mouseover !== undefined
-        ) {
-          console.log(mouseover.target.bbid);
-          lastMouseOverInnerText = mouseover.target.bbid;
-        }
-      }
-    )}`
-  );
-  console.log("~~~END OF DEBUG~~~");
 }
 // keypress handler
 const click_button = (buttonName, lastMouseOverInnerText) => {
@@ -91,7 +67,6 @@ chrome.storage.sync
         } else {
           buttons[q].bbid = `button${q}`;
         }
-        console.log(buttons[q].bbid);
       }
       matchKeypress(e.key, userSettings, lastMouseOverInnerText);
     });
