@@ -3,11 +3,19 @@
     <meta charset="utf-8" />
     <link href="/dist/output.css" rel="stylesheet" />
   </head>
-  <script defer src="options.js" type="module"></script> <body >
+  <script defer src="options.js" type="module"></script> 
+  <body class="bg-gray-firefoxbg px-4">
     <form class="bg-gray-firefoxbg px-4" id="userSettings">
+
+      <div>
+        <h3 class="text-lg font-bold mb-2">Keybinds</h3>
+        <button class="toggle-btn" data-target="set-one">Toggle</button>
+      </div>
+
+      <div class="input-container">
       <div id="set-one" class="py-1">
         <input class="placeholder-gray-300 px-5 py-2 font-semibold text-black border border-b-4 border-r-4 border-black rounded-lg shadow-lg focus:underline decoration-solid" type="text" id="button1" name="bindset1" placeholder="Button Text"/>
-        <input class="placeholder-gray-300 px-5 py-2 font-semibold text-black border border-b-4 border-r-4 border-black rounded-lg shadow-lg focus:underline decoration-solid" type="text" id="binding1" name="bindset1" placeholder="Your bindingbinding" />
+        <input class="placeholder-gray-300 px-5 py-2 font-semibold text-black border border-b-4 border-r-4 border-black rounded-lg shadow-lg focus:underline decoration-solid" type="text" id="binding1" name="bindset1" placeholder="Your binding" />
       </div>
       <div id="set-two" class="py-1">
         <input class="placeholder-gray-300 px-5 py-2 font-semibold text-black border border-b-4 border-r-4 border-black rounded-lg shadow-lg focus:underline decoration-solid" type="text" id="button2" name="bindset2" />
@@ -37,12 +45,41 @@
         <input class="placeholder-gray-300 px-5 py-2 font-semibold text-black border border-b-4 border-r-4 border-black rounded-lg shadow-lg focus:underline decoration-solid" type="text" id="button8" name="bindset8" />
         <input class="placeholder-gray-300 px-5 py-2 font-semibold text-black border border-b-4 border-r-4 border-black rounded-lg shadow-lg focus:underline decoration-solid" type="text" id="binding8" name="bindset8" />
       </div>
-      <div class="py-3">
-      <button class="px-5 py-2 font-semibold bg-white border border-b-4 border-r-4 border-black rounded-lg hover:text-white hover:shadow-[inset_13rem_0_0_0] hover:shadow-black duration-[400ms, 700ms] hover:white duration-[1000ms,500ms] hover:border-white transition-[color,box-shadow, border] active:bg-gray-300" type="submit" id="saveButton" name="save">
-        Save</button>
-   
     </div>
-    </div>
+  </div>
+</div>
+
+<div>
+  <h3 class="text-lg font-bold mb-2">JumpKey</h3>
+  <button class="toggle-btn" data-target="jumpkey-section">Toggle</button>
+</div>
+
+<div id="jumpkey-section">
+    <h3 class="text-lg font-bold mb-2">Keybinds</h3>
+</div>
+
+
+<div id="letters" class="py-1">
+</div>
+
+<h2 class="text-lg font-bold mb-2">Jumpkey trigger</h2>
+<label for="jump-key-select">Jump Key:</label>
+<select id="jumpKeySelect">
+  <option value="ctrl" selected>Ctrl</option>
+  <option value="alt">Alt</option>
+  <option value="shift">Shift</option>
+  <option value="option">Option</option>
+  <option value="cmd">Cmd</option>
+</select>
+
+
+
+<div class="py-3">
+<button class="px-5 py-2 font-semibold bg-white border border-b-4 border-r-4 border-black rounded-lg hover:text-white hover:shadow-[inset_13rem_0_0_0] hover:shadow-black duration-[400ms, 700ms] hover:white duration-[1000ms,500ms] hover:border-white transition-[color,box-shadow, border] active:bg-gray-300" type="submit" id="saveButton" name="save">
+  Save </button>
+</div>
+
+
     </form>
     <script src="jquery.min.js"></script>
   </body>

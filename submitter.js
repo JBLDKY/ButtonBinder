@@ -36,7 +36,7 @@
  */
 
 const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
-let controlPressed = false;
+let jumpKeyPressed = false;
 let firstKey = null;
 
 // Error handler
@@ -149,7 +149,7 @@ function hideBoxes() {
     box.remove();
   });
   firstKey = null;
-  controlPressed = false;
+  jumpKeyPressed = false;
 }
 
 function removeNonMatchingBoxes(firstKey) {
@@ -176,31 +176,50 @@ function drawAllBoxes() {
   });
 }
 
-function startJumpLetter(e) {
-  {
-    if (e.code === "ControlLeft" || e.code === "ControlRight") {
-      if (controlPressed) {
-        hideBoxes();
-        return;
-      }
-      controlPressed = true;
-      firstKey = null;
-      drawAllBoxes();
-    } else if (letters.includes(e.key.toUpperCase()) && controlPressed) {
-      if (firstKey === null) {
-        // handle first key
-        firstKey = e.key.toUpperCase();
-        removeNonMatchingBoxes(firstKey);
-      } else {
-        // handle secondkey
-        let matchFound = handleSearchForMatchJumpKey(e);
+function isValidJumpKey(e, jumpKey) {
+  switch (jumpKey) {
+    case "ctrl":
+      return e.code === "ControlLeft" || e.code === "ControlRight";
+    case "alt":
+      return e.code === "AltLeft" || e.code === "AltRight";
+    case "shift":
+      return e.code === "ShiftLeft" || e.code === "ShiftRight";
+    case "option":
+      return e.code === "AltLeft" || e.code === "AltRight";
+    case "cmd":
+      return e.code === "MetaLeft" || e.code === "MetaRight";
+    default:
+      return false;
+  }
+}
 
-        if (!matchFound) {
-          handleNoMatchJumpkey();
-        }
+function startJumpLetter(e, jumpKey) {
+  if (!isValidJumpKey) {
+    return;
+  }
 
-        hideBoxes();
+  if (e.code === "ControlLeft" || e.code === "ControlRight") {
+    if (jumpKeyPressed) {
+      hideBoxes();
+      return;
+    }
+    jumpKeyPressed = true;
+    firstKey = null;
+    drawAllBoxes();
+  } else if (letters.includes(e.key.toUpperCase()) && jumpKeyPressed) {
+    if (firstKey === null) {
+      // handle first key
+      firstKey = e.key.toUpperCase();
+      removeNonMatchingBoxes(firstKey);
+    } else {
+      // handle secondkey
+      let matchFound = handleSearchForMatchJumpKey(e);
+
+      if (!matchFound) {
+        handleNoMatchJumpkey();
       }
+
+      hideBoxes();
     }
   }
 }
@@ -225,31 +244,8 @@ function handleNoMatchJumpkey() {
     box.style.display = "none";
   });
   firstKey = null;
-  controlPressed = false;
+  jumpKeyPressed = false;
 }
-
-const getting = chrome.storage.sync.get(["keybindings"]);
-chrome.storage.sync
-  .get(["keybindings"])
-  .then(onGot, onError)
-  .then((userSettings) => {
-    document.addEventListener("keydown", (e) => startJumpLetter(e));
-
-    document.addEventListener("keypress", (e) => {
-      const buttons = $("button");
-      for (let i = 0; i < buttons.length; i++) {
-        // Here ButtonBinder sets the innerText of buttons with no innerText to
-        // a custom bbid. The bbid is button# with # being the index of the button
-        // in the jquery list. Buttons that DO have an innerText attribute keep theirs instead.
-        if (buttons[i].innerText !== "" && buttons[i].innerText !== undefined) {
-          buttons[i].bbid = buttons[i].innerText;
-        } else {
-          buttons[i].bbid = `button${i}`;
-        }
-      }
-      matchKeypress(e.key, userSettings);
-    });
-  });
 
 function jumpKeyPress(e) {
   const clickableElements = document.querySelectorAll(
@@ -272,3 +268,29 @@ function jumpKeyPress(e) {
     }
   }
 }
+
+const getting = chrome.storage.sync.get(["keybindings"]);
+const getJumpKey = chrome.storage.sync.get(["jumpKey"]);
+
+chrome.storage.sync
+  .get(["keybindings", "jumpKey"])
+  .then(onGot, onError)
+  .then((userSettings) => {
+    document.addEventListener("keydown", (e) =>
+      startJumpLetter(e, userSettings.jumpKey)
+    );
+    document.addEventListener("keypress", (e) => {
+      const buttons = $("button");
+      for (let i = 0; i < buttons.length; i++) {
+        // Here ButtonBinder sets the innerText of buttons with no innerText to
+        // a custom bbid. The bbid is button# with # being the index of the button
+        // in the jquery list. Buttons that DO have an innerText attribute keep theirs instead.
+        if (buttons[i].innerText !== "" && buttons[i].innerText !== undefined) {
+          buttons[i].bbid = buttons[i].innerText;
+        } else {
+          buttons[i].bbid = `button${i}`;
+        }
+      }
+      matchKeypress(e.key, userSettings);
+    });
+  });

@@ -35,9 +35,10 @@ function toObject(bindings) {
     // add object to test_settings object
     userKeybindings[bindings[i].name] = bindSet;
   }
-
   return userKeybindings;
 }
+  // Add the jump key option to the userKeybindings object
+
 
 function saveHandler(event) {
   /**
@@ -53,9 +54,13 @@ function saveHandler(event) {
   const bindings = $("[name^=bindset]");
   const userKeybindings = toObject(bindings);
 
+  const jumpKey = document.querySelector("#jumpKeySelect").value;
+
   chrome.storage.sync.set({
     keybindings: userKeybindings,
+    jumpKey: jumpKey,
   });
+
 
   // prevents an ugly graphical abberration, probably caused by some redirect
   event.preventDefault();
@@ -67,16 +72,18 @@ function restoreOptions() {
    * we load everything required by buttonBinder to function.
    *
    **/
-  let gettingItem = chrome.storage.sync.get(["keybindings"]);
+
+  let gettingItem = chrome.storage.sync.get(["keybindings", "jumpKey"]);
 
   gettingItem.then((res) => {
     const userKeybindings = res.keybindings;
-    const bindSetsNames = Object.keys(userKeybindings );
+    const jumpKey = res.jumpKey;
 
+    const bindSetsNames = Object.keys(userKeybindings);
 
     // Iterate over all the keys of our userKeybindings
     // so that we can put them back in the form the way
-    // the user left them. To preserve the order, 
+    // the user left them. To preserve the order,
     // the bindings/bindsets/buttons have a number attached to them
     // at index -1.
     bindSetsNames.forEach((x) => {
@@ -85,9 +92,11 @@ function restoreOptions() {
       const index = x.slice(-1);
 
       // set the input fields to contain the values the user left
-      document.querySelector(`#button${index}`).value = button; 
+      document.querySelector(`#button${index}`).value = button;
       document.querySelector(`#binding${index}`).value = binding;
     });
+
+    document.querySelector("#jumpKeySelect").value = jumpKey;
     // after user settings are loaded, hide the unused divs
     dynamicInputFields();
   });
@@ -130,3 +139,21 @@ function addOnChangeListener() {
     element.addEventListener("change", dynamicInputFields);
   });
 }
+
+document.addEventListener("DOMContentLoaded", () => {
+  const toggleBtns = document.querySelectorAll(".toggle-btn");
+
+  toggleBtns.forEach((btn) => {
+    btn.addEventListener("click", (event) => {
+      const target = event.target.dataset.target;
+      const content = document.querySelector(".input-container");
+      if (content.style.display === "block") {
+        content.style.display = "none";
+      } else {
+        content.style.display = "block";
+      }
+    });
+  });
+});
+
+
