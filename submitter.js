@@ -35,6 +35,10 @@
  * in a nicer way.
  */
 
+const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
+let controlPressed = false;
+let firstKey = null;
+
 // Error handler
 function onError(error) {
   console.log(`Error: ${error}`);
@@ -56,6 +60,7 @@ function debug() {
   for (let q = 0; q < buttons.length; q++) {
     buttons[q].innerText = buttons[q].bbid;
   }
+
   const contextMenu = document.querySelector(".context");
   chrome.storage.sync.get(["keybindings"]).then((res) => {});
 }
@@ -93,9 +98,11 @@ function matchKeypress(keypress, userSettings) {
    * Triggers the onclick event of the provided button
    **/
   const keybindings = userSettings["keybindings"];
+  if (keybindings === undefined || keybindings == null) {
+    return;
+  }
   const bindsets = Object.values(keybindings);
   const keyMatcherObject = {};
-  console.log(bindsets);
 
   // Would be much cleaner to just use a real switch case
   // rather than loop through a list. This piece of code essentially
@@ -109,11 +116,125 @@ function matchKeypress(keypress, userSettings) {
   clickButton(keyMatcherObject[keypress]);
 }
 
+function getClickableElements(element) {
+  return document.querySelectorAll("a, button, input[type='submit']");
+}
+
+function drawBoxOn(element, letter) {
+  const box = document.createElement("div");
+  box.style.backgroundColor = "tan";
+  box.style.width = "20px";
+  box.style.height = "20px";
+  box.style.position = "absolute";
+  box.style.left = "0";
+  box.style.top = "0";
+  box.style.textAlign = "center";
+  box.style.fontSize = "14px";
+  box.style.borderRadius = "10px";
+  box.style.border = "1px solid black";
+  box.style.boxShadow = "2px 2px 2px gray";
+  box.style.fontSize = "14px";
+  box.style.color = "black";
+  box.innerText = letter;
+  box.setAttribute("jumpLetter", letter);
+
+  element.style.position = "relative";
+  // element.parentNode.insertBefore(box, element.nextSibling);
+  element.appendChild(box);
+}
+
+function hideBoxes() {
+  const boxes = document.querySelectorAll("[jumpLetter]");
+  boxes.forEach((box) => {
+    box.remove();
+  });
+  firstKey = null;
+  controlPressed = false;
+}
+
+function removeNonMatchingBoxes(firstKey) {
+  const boxes = document.querySelectorAll("[data-letter]");
+  boxes.forEach((box) => {
+    if (!box.getAttribute("jumpLetter").startsWith(firstKey)) {
+      box.remove();
+    }
+  });
+}
+
+function drawAllBoxes() {
+  const clickableElements = document.querySelectorAll(
+    "a, button, input[type='submit']"
+  );
+
+  // Get all clickable elements on the page
+  // Loop through each clickable element and add a small box next to it
+  clickableElements.forEach((element, index) => {
+    const letter1 = letters[Math.floor(index / letters.length)];
+    const letter2 = letters[index % letters.length];
+    const letter = letter2 + letter1;
+    drawBoxOn(element, letter);
+  });
+}
+
+function startJumpLetter(e) {
+  {
+    if (e.code === "ControlLeft" || e.code === "ControlRight") {
+      if (controlPressed) {
+        hideBoxes();
+        return;
+      }
+      controlPressed = true;
+      firstKey = null;
+      drawAllBoxes();
+    } else if (letters.includes(e.key.toUpperCase()) && controlPressed) {
+      if (firstKey === null) {
+        // handle first key
+        firstKey = e.key.toUpperCase();
+        removeNonMatchingBoxes(firstKey);
+      } else {
+        // handle secondkey
+        let matchFound = handleSearchForMatchJumpKey(e);
+
+        if (!matchFound) {
+          handleNoMatchJumpkey();
+        }
+
+        hideBoxes();
+      }
+    }
+  }
+}
+function handleSearchForMatchJumpKey(e) {
+  const clickableElements = document.querySelectorAll(
+    "a, button, input[type='submit']"
+  );
+  for (const element of clickableElements) {
+    const box = element.querySelector(
+      "[jumpLetter='" + firstKey + e.key.toUpperCase() + "']"
+    );
+    if (box) {
+      element.click();
+      return true;
+    }
+  }
+}
+
+function handleNoMatchJumpkey() {
+  const boxes = document.querySelectorAll("[jumpLetter]");
+  boxes.forEach((box) => {
+    box.style.display = "none";
+  });
+  firstKey = null;
+  controlPressed = false;
+}
+
 const getting = chrome.storage.sync.get(["keybindings"]);
 chrome.storage.sync
   .get(["keybindings"])
   .then(onGot, onError)
   .then((userSettings) => {
+    document.addEventListener("keydown", (e) => startJumpLetter(e));
+
     document.addEventListener("keypress", (e) => {
       const buttons = $("button");
       for (let i = 0; i < buttons.length; i++) {
@@ -129,3 +250,25 @@ chrome.storage.sync
       matchKeypress(e.key, userSettings);
     });
   });
+
+function jumpKeyPress(e) {
+  const clickableElements = document.querySelectorAll(
+    "a, button, input[type='submit']"
+  );
+
+  for (const element of clickableElements) {
+    const box = element.querySelector(
+      "[jumpLetter^='" + e.key.toUpperCase() + "']"
+    );
+
+    if (box) {
+      const letter = box.getAttribute("jumpLetter");
+      if (letter.length === 1) {
+        box.setAttribute("jumpLetter", letter + e.key.toUpperCase());
+      } else if (letter === e.key.toUpperCase() + e.key.toUpperCase()) {
+        element.click();
+      }
+      break;
+    }
+  }
+}
