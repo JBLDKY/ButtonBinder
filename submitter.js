@@ -194,7 +194,7 @@ function isValidJumpKey(e, jumpKey) {
 }
 
 function startJumpLetter(e, jumpKey) {
-  if (!isValidJumpKey) {
+  if (!isValidJumpKey()) {
     return;
   }
 
