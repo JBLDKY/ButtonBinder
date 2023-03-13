@@ -291,28 +291,6 @@ function handleNoMatchJumpkey() {
   jumpKeyPressed = false;
 }
 
-// function jumpKeyPress(e) {
-//   const clickableElements = document.querySelectorAll(
-//     "a, button, input[type='submit']"
-//   );
-//
-//   for (const element of clickableElements) {
-//     const box = element.querySelector(
-//       "[jumpLetter^='" + e.key.toUpperCase() + "']"
-//     );
-//
-//     if (box) {
-//       const letter = box.getAttribute("jumpLetter");
-//       if (letter.length === 1) {
-//         box.setAttribute("jumpLetter", letter + e.key.toUpperCase());
-//       } else if (letter === e.key.toUpperCase() + e.key.toUpperCase()) {
-//         element.click();
-//       }
-//       break;
-//     }
-//   }
-// }
-//
 const getting = chrome.storage.sync.get(["keybindings"]);
 const getJumpKey = chrome.storage.sync.get(["jumpKey"]);
 

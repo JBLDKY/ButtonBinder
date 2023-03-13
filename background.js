@@ -9,5 +9,6 @@ chrome.runtime.onMessage.addListener(function (message) {
 });
 
 function openOptionsPage() {
+  console.log("opening options page");
     chrome.runtime.openOptionsPage();
 }

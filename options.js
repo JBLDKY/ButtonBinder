@@ -58,7 +58,7 @@ function saveHandler(event) {
     buttonbinder: document.querySelector("#EnableButtonBinder").checked,
     jumpkey: document.querySelector("#EnableJumpKey").checked,
   };
-  console.log(enabled);
+  console.log(userKeybindings);
 
   chrome.storage.sync.set({
     keybindings: userKeybindings,
@@ -68,6 +68,53 @@ function saveHandler(event) {
 
   // prevents an ugly graphical abberration, probably caused by some redirect
   event.preventDefault();
+}
+
+function createInputFields() {
+  const index = document.querySelectorAll("[id^=set-]").length + 1;
+  const previousDiv = document.querySelector(`#set-${index - 1}`);
+
+  // Check if the input fields with the given index exists
+  if (!document.querySelector(`#button${index}`)) {
+    // If not, add the input fields
+    if (!previousDiv || (previousDiv && previousDiv.children[0].value !== "")) {
+      const newDiv = document.createElement("div");
+      newDiv.className = "py-1";
+      newDiv.id = `set-${index}`;
+
+      const buttonInput = document.createElement("input");
+      buttonInput.className =
+        "placeholder-gray-300 px-5 py-2 font-semibold text-black border border-b-4 border-r-4 border-black rounded-lg shadow-lg focus:underline decoration-solid";
+      buttonInput.type = "text";
+      buttonInput.id = `button${index}`;
+      buttonInput.name = `bindset${index}`;
+      buttonInput.placeholder = "Button text";
+
+      const bindingInput = document.createElement("input");
+      bindingInput.className =
+        "placeholder-gray-300 px-5 py-2 font-semibold text-black border border-b-4 border-r-4 border-black rounded-lg shadow-lg focus:underline decoration-solid";
+      bindingInput.type = "text";
+      bindingInput.id = `binding${index}`;
+      bindingInput.name = `bindset${index}`;
+      bindingInput.placeholder = "Your binding";
+
+
+      document.querySelector(".input-container.collapsed").appendChild(newDiv);
+    }
+  }
+
+  // Check if the input fields with the given index are empty
+  const buttonInput = document.querySelector(`#button${index}`);
+  const bindingInput = document.querySelector(`#binding${index}`);
+  if (
+    buttonInput &&
+    bindingInput &&
+    buttonInput.value === "" &&
+    bindingInput.value === ""
+  ) {
+    const currentDiv = document.querySelector(`#set-${index}`);
+    currentDiv.remove();
+  }
 }
 
 function restoreOptions() {
@@ -87,9 +134,9 @@ function restoreOptions() {
     const userKeybindings = res.keybindings;
     const jumpKey = res.jumpKey;
     const enabled = res.enabled;
-    console.log(enabled);
 
     const bindSetsNames = Object.keys(userKeybindings);
+    console.log(bindSetsNames);
 
     // Iterate over all the keys of our userKeybindings
     // so that we can put them back in the form the way
@@ -104,16 +151,17 @@ function restoreOptions() {
       // set the input fields to contain the values the user left
       document.querySelector(`#button${index}`).value = button;
       document.querySelector(`#binding${index}`).value = binding;
+
+      createInputFields();
     });
 
     document.querySelector("#jumpKeySelect").value = jumpKey;
-    console.log(enabled);
     document.querySelector("#EnableButtonBinder").checked =
       enabled.buttonbinder;
     document.querySelector("#EnableJumpKey").checked = enabled.jumpkey;
 
     // after user settings are loaded, hide the unused divs
-    dynamicInputFields();
+    // dynamicInputFields();
   });
 }
 
@@ -145,38 +193,73 @@ document.addEventListener("DOMContentLoaded", restoreOptions);
 document.addEventListener("DOMContentLoaded", () => {
   document.querySelector("form").addEventListener("submit", saveHandler);
 });
+
+const inputContainer = document.querySelector(".input-container.collapsed");
+inputContainer.addEventListener("change", (event) => {
+  if (event.target.matches("input[id^='button']")) {
+    console.log("Button change detected");
+    const buttonValue = event.target.value;
+    const index = parseInt(event.target.id.slice(-1));
+    createInputFields(index, buttonValue);
+  } else if (event.target.matches("input[id^='binding']")) {
+    console.log("Binding change detected");
+    const bindingValue = event.target.value;
+    const index = parseInt(event.target.id.slice(-1));
+    createInputFields(index, null, bindingValue);
+  }
+});
+
 // on page load, add onchange listeners to all input fields
-document.addEventListener("DOMContentLoaded", addOnChangeListener);
+// document.addEventListener("DOMContentLoaded", addOnChangeListener);
 
 // add onchange listeners to all input fields
-function addOnChangeListener() {
-  document.querySelectorAll("input").forEach((element) => {
-    element.addEventListener("change", dynamicInputFields);
-  });
-}
-
-//
-//
-// document.addEventListener("DOMContentLoaded", () => {
-//   const toggleBtns = document.querySelectorAll(".toggle-btn");
-//
-//   toggleBtns.forEach((btn) => {
-//     btn.addEventListener("click", (event) => {
-//       const target = event.target.dataset.target;
-//       const content = document.querySelector(".input-container");
-//       if (content.style.display === "block") {
-//         content.style.display = "none";
-//       } else {
-//         content.style.display = "block";
-//       }
-//     });
+// function addOnChangeListener() {
+//   document.querySelectorAll("input").forEach((element) => {
+//     element.addEventListener("change", dynamicInputFields);
 //   });
-// });
-//
+// }
 
-// const collapseElement = document.querySelector("[data-te-target='#flush-collapseOne']");
-// const collapseInstance = new Collapse(collapseElement);
-//
-// collapseElement.addEventListener("click", function() {
-//   collapseInstance.toggle();
+// chrome.runtime.onMessage.addListener(function (request) {
+//   if (request.action === "openOptionsPage") {
+//     createNewDiv();
+//   }
 // });
+//
+// function createNewDiv() {
+//   console.log("creating new div");
+//   let counter = 8;
+//   let buttonId = "button" + counter;
+//   let bindingId = "binding" + counter;
+//
+//   while (document.getElementById(buttonId)) {
+//     counter++;
+//     buttonId = "button" + counter;
+//     bindingId = "binding" + counter;
+//   }
+//
+//   let div = document.createElement("div");
+//   div.id = "set-" + counter;
+//   div.className = "py-1";
+//
+//   let buttonInput = document.createElement("input");
+//   buttonInput.type = "text";
+//   buttonInput.id = buttonId;
+//   buttonInput.name = "bindset" + counter;
+//   buttonInput.className =
+//     "placeholder-gray-300 px-5 py-2 font-semibold text-black border border-b-4 border-r-4 border-black rounded-lg shadow-lg focus:underline decoration-solid";
+//   buttonInput.placeholder = "Button text";
+//   buttonInput.value = localStorage.getItem("jumpKeyMatch");
+//
+//   let bindingInput = document.createElement("input");
+//   bindingInput.type = "text";
+//   bindingInput.id = bindingId;
+//   bindingInput.name = "bindset" + counter;
+//   bindingInput.className =
+//     "placeholder-gray-300 px-5 py-2 font-semibold text-black border border-b-4 border-r-4 border-black rounded-lg shadow-lg focus:underline decoration-solid";
+//   bindingInput.placeholder = "Your binding";
+//
+//   div.appendChild(buttonInput);
+//   div.appendChild(bindingInput);
+//
+//   document.body.appendChild(div);
+// }
