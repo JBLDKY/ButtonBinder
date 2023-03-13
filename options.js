@@ -53,8 +53,8 @@ function saveHandler(event) {
    */
   const bindings = $("[name^=bindset]");
   const userKeybindings = toObject(bindings);
-
   const jumpKey = document.querySelector("#jumpKeySelect").value;
+
 
   chrome.storage.sync.set({
     keybindings: userKeybindings,
@@ -140,20 +140,31 @@ function addOnChangeListener() {
   });
 }
 
-document.addEventListener("DOMContentLoaded", () => {
-  const toggleBtns = document.querySelectorAll(".toggle-btn");
-
-  toggleBtns.forEach((btn) => {
-    btn.addEventListener("click", (event) => {
-      const target = event.target.dataset.target;
-      const content = document.querySelector(".input-container");
-      if (content.style.display === "block") {
-        content.style.display = "none";
-      } else {
-        content.style.display = "block";
-      }
-    });
-  });
-});
 
 
+//
+  //
+// document.addEventListener("DOMContentLoaded", () => {
+//   const toggleBtns = document.querySelectorAll(".toggle-btn");
+//
+//   toggleBtns.forEach((btn) => {
+//     btn.addEventListener("click", (event) => {
+//       const target = event.target.dataset.target;
+//       const content = document.querySelector(".input-container");
+//       if (content.style.display === "block") {
+//         content.style.display = "none";
+//       } else {
+//         content.style.display = "block";
+//       }
+//     });
+//   });
+// });
+//
+
+
+// const collapseElement = document.querySelector("[data-te-target='#flush-collapseOne']");
+// const collapseInstance = new Collapse(collapseElement);
+//
+// collapseElement.addEventListener("click", function() {
+//   collapseInstance.toggle();
+// });

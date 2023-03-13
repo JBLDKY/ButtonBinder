@@ -49,21 +49,21 @@ function onGot() {
   return userSettings;
 }
 
-function debug() {
-  /**
-   * This function is the debug functionality that is triggered when
-   * a button with the name #DEBUG is pressed. Simply enter #DEBUG
-   * for buttonname in the options of the extension and press
-   * whatever binding you assign it to.
-   **/
-  const buttons = $("button");
-  for (let q = 0; q < buttons.length; q++) {
-    buttons[q].innerText = buttons[q].bbid;
-  }
-
-  const contextMenu = document.querySelector(".context");
-  chrome.storage.sync.get(["keybindings"]).then((res) => {});
-}
+// function debug() {
+//   /**
+//    * This function is the debug functionality that is triggered when
+//    * a button with the name #DEBUG is pressed. Simply enter #DEBUG
+//    * for buttonname in the options of the extension and press
+//    * whatever binding you assign it to.
+//    **/
+//   const buttons = $("button");
+//   for (let q = 0; q < buttons.length; q++) {
+//     buttons[q].innerText = buttons[q].bbid;
+//   }
+//
+//   const contextMenu = document.querySelector(".context");
+//   chrome.storage.sync.get(["keybindings"]).then((res) => {});
+// }
 
 // keypress handler
 function clickButton(buttonName) {
@@ -84,10 +84,10 @@ function clickButton(buttonName) {
     }
   }
 
-  // Trigger debug mode if the buttonName is #DEBUG
-  if (buttonName === "#DEBUG") {
-    debug();
-  }
+  // // Trigger debug mode if the buttonName is #DEBUG
+  // if (buttonName === "#DEBUG") {
+  //   debug();
+  // }
 }
 
 // switch case for keypresses
@@ -123,13 +123,13 @@ function getClickableElements(element) {
 function drawBoxOn(element, letter) {
   const box = document.createElement("div");
   box.style.backgroundColor = "tan";
-  box.style.width = "20px";
-  box.style.height = "20px";
+  box.style.width = "25px";
+  box.style.height = "25px";
   box.style.position = "absolute";
   box.style.left = "0";
   box.style.top = "0";
   box.style.textAlign = "center";
-  box.style.fontSize = "14px";
+  box.style.fontSize = "10px";
   box.style.borderRadius = "10px";
   box.style.border = "1px solid black";
   box.style.boxShadow = "2px 2px 2px gray";
@@ -153,7 +153,7 @@ function hideBoxes() {
 }
 
 function removeNonMatchingBoxes(firstKey) {
-  const boxes = document.querySelectorAll("[data-letter]");
+  const boxes = document.querySelectorAll("[jumpLetter]");
   boxes.forEach((box) => {
     if (!box.getAttribute("jumpLetter").startsWith(firstKey)) {
       box.remove();
@@ -177,36 +177,59 @@ function drawAllBoxes() {
 }
 
 function isValidJumpKey(e, jumpKey) {
-  switch (jumpKey) {
-    case "ctrl":
-      return e.code === "ControlLeft" || e.code === "ControlRight";
-    case "alt":
-      return e.code === "AltLeft" || e.code === "AltRight";
-    case "shift":
-      return e.code === "ShiftLeft" || e.code === "ShiftRight";
-    case "option":
-      return e.code === "AltLeft" || e.code === "AltRight";
-    case "cmd":
-      return e.code === "MetaLeft" || e.code === "MetaRight";
-    default:
-      return false;
+  if (jumpKey == "ctrl") {
+    return e.code === "ControlLeft" || e.code === "ControlRight";
   }
+  if (jumpKey == "option") {
+    return e.code === "AltLeft" || e.code === "AltRight";
+  }
+  if (jumpKey == "alt") {
+    return e.code === "AltLeft" || e.code === "AltRight";
+  }
+  if (jumpKey == "cmd") {
+    return e.code === "MetaLeft" || e.code === "MetaRight";
+  }
+  if (jumpKey == "shift") {
+    return e.code === "ShiftLeft" || e.code === "ShiftRight";
+  }
+  return false;
+}
+function isModifierCode(code) {
+  modifierKeys = [
+    "SHIFTLEFT",
+    "METALEFT",
+    "ALTLEFT",
+    "CONTROLLEFT",
+    "SHIFTRIGHT",
+    "METARIGHT",
+    "ALTRIGHT",
+    "CONTROLRIGHT",
+  ];
+  if (modifierKeys.includes(code.toUpperCase())) {
+    return true;
+  }
+  return false;
 }
 
 function startJumpLetter(e, jumpKey) {
-  if (!isValidJumpKey()) {
+  if (isModifierCode(e.code) && !isValidJumpKey(e, jumpKey)) {
     return;
   }
 
-  if (e.code === "ControlLeft" || e.code === "ControlRight") {
-    if (jumpKeyPressed) {
-      hideBoxes();
-      return;
-    }
+  if (jumpKeyPressed && isValidJumpKey(e, jumpKey)) {
+    hideBoxes();
+    return;
+  }
+
+  if (isModifierCode(e.code) && isValidJumpKey(e, jumpKey)) {
+    drawAllBoxes();
     jumpKeyPressed = true;
     firstKey = null;
-    drawAllBoxes();
-  } else if (letters.includes(e.key.toUpperCase()) && jumpKeyPressed) {
+  }
+
+  // dont draw twice
+
+  if (jumpKeyPressed && letters.includes(e.key.toUpperCase())) {
     if (firstKey === null) {
       // handle first key
       firstKey = e.key.toUpperCase();
@@ -247,6 +270,7 @@ function handleNoMatchJumpkey() {
   jumpKeyPressed = false;
 }
 
+
 function jumpKeyPress(e) {
   const clickableElements = document.querySelectorAll(
     "a, button, input[type='submit']"
@@ -272,25 +296,22 @@ function jumpKeyPress(e) {
 const getting = chrome.storage.sync.get(["keybindings"]);
 const getJumpKey = chrome.storage.sync.get(["jumpKey"]);
 
-chrome.storage.sync
-  .get(["keybindings", "jumpKey"])
-  .then(onGot, onError)
-  .then((userSettings) => {
-    document.addEventListener("keydown", (e) =>
-      startJumpLetter(e, userSettings.jumpKey)
-    );
-    document.addEventListener("keypress", (e) => {
-      const buttons = $("button");
-      for (let i = 0; i < buttons.length; i++) {
-        // Here ButtonBinder sets the innerText of buttons with no innerText to
-        // a custom bbid. The bbid is button# with # being the index of the button
-        // in the jquery list. Buttons that DO have an innerText attribute keep theirs instead.
-        if (buttons[i].innerText !== "" && buttons[i].innerText !== undefined) {
-          buttons[i].bbid = buttons[i].innerText;
-        } else {
-          buttons[i].bbid = `button${i}`;
-        }
+chrome.storage.sync.get(["keybindings", "jumpKey"]).then((userSettings) => {
+  document.addEventListener("keydown", (e) =>
+    startJumpLetter(e, userSettings.jumpKey)
+  );
+  document.addEventListener("keypress", (e) => {
+    const buttons = $("button");
+    for (let i = 0; i < buttons.length; i++) {
+      // Here ButtonBinder sets the innerText of buttons with no innerText to
+      // a custom bbid. The bbid is button# with # being the index of the button
+      // in the jquery list. Buttons that DO have an innerText attribute keep theirs instead.
+      if (buttons[i].innerText !== "" && buttons[i].innerText !== undefined) {
+        buttons[i].bbid = buttons[i].innerText;
+      } else {
+        buttons[i].bbid = `button${i}`;
       }
-      matchKeypress(e.key, userSettings);
-    });
+    }
+    matchKeypress(e.key, userSettings);
   });
+});
