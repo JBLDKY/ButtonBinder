@@ -38,6 +38,11 @@
 const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
 let jumpKeyPressed = false;
 let firstKey = null;
+let redirectTimeout = null;
+
+document.addEventListener("keyup", (e) => {
+  clearTimeout(redirectTimeout);
+});
 
 // Error handler
 function onError(error) {
@@ -227,25 +232,31 @@ function startJumpLetter(e, jumpKey) {
     firstKey = null;
   }
 
-  // dont draw twice
-
   if (jumpKeyPressed && letters.includes(e.key.toUpperCase())) {
     if (firstKey === null) {
       // handle first key
       firstKey = e.key.toUpperCase();
       removeNonMatchingBoxes(firstKey);
     } else {
-      // handle secondkey
+      // handle second key
       let matchFound = handleSearchForMatchJumpKey(e);
 
       if (!matchFound) {
         handleNoMatchJumpkey();
+      } else {
+        // Copy the match's inner text to somewhere in the settings page
+        let matchedElement = document.querySelector(
+          "[jumpLetter='" + firstKey + e.key.toUpperCase() + "']"
+        );
+        // You'll need to store the copied inner text somewhere for later use in the settings page
+        localStorage.setItem("jumpKeyMatch", matchedElement.innerText);
       }
 
       hideBoxes();
     }
   }
 }
+
 function handleSearchForMatchJumpKey(e) {
   const clickableElements = document.querySelectorAll(
     "a, button, input[type='submit']"
@@ -255,8 +266,18 @@ function handleSearchForMatchJumpKey(e) {
       "[jumpLetter='" + firstKey + e.key.toUpperCase() + "']"
     );
     if (box) {
-      element.click();
-      return true;
+      clearTimeout(redirectTimeout);
+      redirectTimeout = setTimeout(function () {
+        chrome.runtime.sendMessage({ action: "openOptionsPage" });
+      }, 1000);
+
+      if (!e.repeat) {
+        console.log("repeat");
+        // Store the inner text of the matched element
+        localStorage.setItem("jumpKeyMatch", element.innerText);
+        element.click();
+        return true;
+      }
     }
   }
 }
@@ -270,48 +291,58 @@ function handleNoMatchJumpkey() {
   jumpKeyPressed = false;
 }
 
-
-function jumpKeyPress(e) {
-  const clickableElements = document.querySelectorAll(
-    "a, button, input[type='submit']"
-  );
-
-  for (const element of clickableElements) {
-    const box = element.querySelector(
-      "[jumpLetter^='" + e.key.toUpperCase() + "']"
-    );
-
-    if (box) {
-      const letter = box.getAttribute("jumpLetter");
-      if (letter.length === 1) {
-        box.setAttribute("jumpLetter", letter + e.key.toUpperCase());
-      } else if (letter === e.key.toUpperCase() + e.key.toUpperCase()) {
-        element.click();
-      }
-      break;
-    }
-  }
-}
-
+// function jumpKeyPress(e) {
+//   const clickableElements = document.querySelectorAll(
+//     "a, button, input[type='submit']"
+//   );
+//
+//   for (const element of clickableElements) {
+//     const box = element.querySelector(
+//       "[jumpLetter^='" + e.key.toUpperCase() + "']"
+//     );
+//
+//     if (box) {
+//       const letter = box.getAttribute("jumpLetter");
+//       if (letter.length === 1) {
+//         box.setAttribute("jumpLetter", letter + e.key.toUpperCase());
+//       } else if (letter === e.key.toUpperCase() + e.key.toUpperCase()) {
+//         element.click();
+//       }
+//       break;
+//     }
+//   }
+// }
+//
 const getting = chrome.storage.sync.get(["keybindings"]);
 const getJumpKey = chrome.storage.sync.get(["jumpKey"]);
 
-chrome.storage.sync.get(["keybindings", "jumpKey"]).then((userSettings) => {
-  document.addEventListener("keydown", (e) =>
-    startJumpLetter(e, userSettings.jumpKey)
-  );
-  document.addEventListener("keypress", (e) => {
-    const buttons = $("button");
-    for (let i = 0; i < buttons.length; i++) {
-      // Here ButtonBinder sets the innerText of buttons with no innerText to
-      // a custom bbid. The bbid is button# with # being the index of the button
-      // in the jquery list. Buttons that DO have an innerText attribute keep theirs instead.
-      if (buttons[i].innerText !== "" && buttons[i].innerText !== undefined) {
-        buttons[i].bbid = buttons[i].innerText;
-      } else {
-        buttons[i].bbid = `button${i}`;
-      }
+chrome.storage.sync
+  .get(["keybindings", "jumpKey", "enabled"])
+  .then((userSettings) => {
+    console.log(userSettings);
+    if (userSettings.enabled["jumpkey"] == true) {
+      document.addEventListener("keydown", (e) =>
+        startJumpLetter(e, userSettings.jumpKey)
+      );
     }
-    matchKeypress(e.key, userSettings);
+
+    if (userSettings.enabled["buttonbinder"] == true) {
+      document.addEventListener("keypress", (e) => {
+        const buttons = $("button");
+        for (let i = 0; i < buttons.length; i++) {
+          // Here ButtonBinder sets the innerText of buttons with no innerText to
+          // a custom bbid. The bbid is button# with # being the index of the button
+          // in the jquery list. Buttons that DO have an innerText attribute keep theirs instead.
+          if (
+            buttons[i].innerText !== "" &&
+            buttons[i].innerText !== undefined
+          ) {
+            buttons[i].bbid = buttons[i].innerText;
+          } else {
+            buttons[i].bbid = `button${i}`;
+          }
+        }
+        matchKeypress(e.key, userSettings);
+      });
+    }
   });
-});

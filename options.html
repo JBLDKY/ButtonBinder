@@ -14,7 +14,6 @@
           class="group relative flex w-full items-center rounded-none border-0 bg-white py-4 px-5 text-left text-base text-neutral-800 transition [overflow-anchor:none] hover:z-[2] focus:z-[3] focus:outline-none dark:bg-neutral-800 dark:text-white [&:not([data-te-collapse-collapsed])]:bg-white [&:not([data-te-collapse-collapsed])]:text-primary [&:not([data-te-collapse-collapsed])]:[box-shadow:inset_0_-1px_0_rgba(229,231,235)] dark:[&:not([data-te-collapse-collapsed])]:bg-neutral-800 dark:[&:not([data-te-collapse-collapsed])]:text-primary-400 dark:[&:not([data-te-collapse-collapsed])]:[box-shadow:inset_0_-1px_0_rgba(75,85,99)]"
           type="button"
           data-te-collapse-init
-          data-te-collapse-collapsed
           data-te-target="#flush-collapseTwo"
           aria-expanded="false"
           aria-controls="flush-collapseTwo">
@@ -38,16 +37,15 @@
       </h2>
       <div
         id="flush-collapseTwo"
-        class="!visible hidden border-0"
+        class="!visible border-0"
         data-te-collapse-item
+        data-te-collapse-show
         aria-labelledby="flush-headingTwo"
         data-te-parent="#accordionFlushExample">
 
 
         <div class="py-4 px-5">
-          <form class="dark:bg-neutral-800 dark:text-white" id="userSettings">
-
-
+          <form class="dark:bg-neutral-800" id="userSettings">
             <div>
               <label
                 class="block text-sm font-medium text-gray-700 dark:text-gray-300"
@@ -55,55 +53,51 @@
                 > Enabled</label
               >
 
-                <input
-                class="mt-[0.3rem] mr-2 h-3.5 w-8 appearance-none rounded-[0.4375rem] bg-neutral-300 dark:bg-neutral-600 before:pointer-events-none before:absolute before:h-3.5 before:w-3.5 before:rounded-full before:bg-transparent before:content-[''] after:absolute after:z-[2] after:-mt-[0.1875rem] after:h-5 after:w-5 after:rounded-full after:border-none after:bg-neutral-100 dark:after:bg-neutral-400 after:shadow-[0_0px_3px_0_rgb(0_0_0_/_7%),_0_2px_2px_0_rgb(0_0_0_/_4%)] after:transition-[background-color_0.2s,transform_0.2s] after:content-[''] checked:bg-primary dark:checked:bg-primary checked:after:absolute checked:after:z-[2] checked:after:-mt-[3px] checked:after:ml-[1.0625rem] checked:after:h-5 checked:after:w-5 checked:after:rounded-full checked:after:border-none checked:after:bg-primary dark:checked:after:bg-primary checked:after:shadow-[0_3px_1px_-2px_rgba(0,0,0,0.2),_0_2px_2px_0_rgba(0,0,0,0.14),_0_1px_5px_0_rgba(0,0,0,0.12)] checked:after:transition-[background-color_0.2s,transform_0.2s] checked:after:content-[''] hover:cursor-pointer focus:before:scale-100 focus:before:opacity-[0.12] focus:before:shadow-[3px_-1px_0px_13px_rgba(0,0,0,0.6)] focus:before:transition-[box-shadow_0.2s,transform_0.2s] focus:after:absolute focus:after:z-[1] focus:after:block focus:after:h-5 focus:after:w-5 focus:after:rounded-full focus:after:content-[''] checked:focus:border-primary checked:focus:bg-primary checked:focus:before:ml-[1.0625rem] checked:focus:before:scale-100 checked:focus:before:shadow-[3px_-1px_0px_13px_#3b71ca] checked:focus:before:transition-[box-shadow_0.2s,transform_0.2s]"
-                type="checkbox"
-                role="switch"
-                id="EnableButtonBinder"/>
-              </div>
-              <div class="py-4">
-                <div class="input-container collapsed">
-                  <div id="set-one" class="py-1">
-                    <input class="placeholder-gray-300 px-5 py-2 font-semibold text-black border border-b-4 border-r-4 border-black rounded-lg shadow-lg focus:underline decoration-solid" type="text" id="button1" name="bindset1" placeholder="Button text"/>
-                    <input class="placeholder-gray-300 px-5 py-2 font-semibold text-black border border-b-4 border-r-4 border-black rounded-lg shadow-lg focus:underline decoration-solid" type="text" id="binding1" name="bindset1" placeholder="Your binding" />
-                  </div>
-                  <div id="set-two" class="py-1">
-                    <input class="placeholder-gray-300 px-5 py-2 font-semibold text-black border border-b-4 border-r-4 border-black rounded-lg shadow-lg focus:underline decoration-solid" type="text" id="button2" name="bindset2" placeholder="Button text"/>   
-                    <input class="placeholder-gray-300 px-5 py-2 font-semibold text-black border border-b-4 border-r-4 border-black rounded-lg shadow-lg focus:underline decoration-solid" type="text" id="binding2" name="bindset2" placeholder="Your binding" />
-                  </div>
-                  <div id="set-three" class="py-1">
-                    <input class="placeholder-gray-300 px-5 py-2 font-semibold text-black border border-b-4 border-r-4 border-black rounded-lg shadow-lg focus:underline decoration-solid" type="text" id="button3" name="bindset3" placeholder="Button text"/>    
-                    <input class="placeholder-gray-300 px-5 py-2 font-semibold text-black border border-b-4 border-r-4 border-black rounded-lg shadow-lg focus:underline decoration-solid" type="text" id="binding3" name="bindset3" placeholder="Your binding" /> 
-                  </div>
-                  <div id="set-four" class="py-1">
-                    <input class="placeholder-gray-300 px-5 py-2 font-semibold text-black border border-b-4 border-r-4 border-black rounded-lg shadow-lg focus:underline decoration-solid" type="text" id="button4" name="bindset4" placeholder="Button text"/>     
-                    <input class="placeholder-gray-300 px-5 py-2 font-semibold text-black border border-b-4 border-r-4 border-black rounded-lg shadow-lg focus:underline decoration-solid" type="text" id="binding4" name="bindset4" placeholder="Your binding" />  
-                  </div>
-                  <div id="set-five" class="py-1">
-                    <input class="placeholder-gray-300 px-5 py-2 font-semibold text-black border border-b-4 border-r-4 border-black rounded-lg shadow-lg focus:underline decoration-solid" type="text" id="button5" name="bindset5" placeholder="Button text"/>      
-                    <input class="placeholder-gray-300 px-5 py-2 font-semibold text-black border border-b-4 border-r-4 border-black rounded-lg shadow-lg focus:underline decoration-solid" type="text" id="binding5" name="bindset5" placeholder="Your binding" />   
-                  </div>
-                  <div id="set-six" class="py-1">
-                    <input class="placeholder-gray-300 px-5 py-2 font-semibold text-black border border-b-4 border-r-4 border-black rounded-lg shadow-lg focus:underline decoration-solid" type="text" id="button6" name="bindset6" placeholder="Button text"/>       
-                    <input class="placeholder-gray-300 px-5 py-2 font-semibold text-black border border-b-4 border-r-4 border-black rounded-lg shadow-lg focus:underline decoration-solid" type="text" id="binding6" name="bindset6" placeholder="Your binding" />    
-                  </div >
-                  <div id="set-seven" class="py-1">
-                    <input class="placeholder-gray-300 px-5 py-2 font-semibold text-black border border-b-4 border-r-4 border-black rounded-lg shadow-lg focus:underline decoration-solid" type="text" id="button7" name="bindset7" placeholder="Button text"/>        
-                    <input class="placeholder-gray-300 px-5 py-2 font-semibold text-black border border-b-4 border-r-4 border-black rounded-lg shadow-lg focus:underline decoration-solid" type="text" id="binding7" name="bindset7" placeholder="Your binding" />     
-                  </div>
-                  <div id="set-eight" class="py-1">
-                    <input class="placeholder-gray-300 px-5 py-2 font-semibold text-black border border-b-4 border-r-4 border-black rounded-lg shadow-lg focus:underline decoration-solid" type="text" id="button8" name="bindset8" placeholder="Button text"/>         
-                    <input class="placeholder-gray-300 px-5 py-2 font-semibold text-black border border-b-4 border-r-4 border-black rounded-lg shadow-lg focus:underline decoration-solid" type="text" id="binding8" name="bindset8" placeholder="Your binding" />      
-                  </div>
-
-                  <div class="py-3">
-                    <button class="px-5 py-2 font-semibold bg-white border border-b-4 border-r-4 border-black rounded-lg hover:text-white hover:shadow-[inset_13rem_0_0_0] hover:shadow-black duration-[400ms, 700ms] hover:white duration-[1000ms,500ms] hover:border-white transition-[color,box-shadow, border] active:bg-gray-300" type="submit" id="saveButton" name="save">
-                      Save 
-                    </button>
-                  </div>
-
-                </div>
+              <input
+              class="mt-[0.3rem] mr-2 h-3.5 w-8 appearance-none rounded-[0.4375rem] bg-neutral-300 dark:bg-neutral-600 before:pointer-events-none before:absolute before:h-3.5 before:w-3.5 before:rounded-full before:bg-transparent before:content-[''] after:absolute after:z-[2] after:-mt-[0.1875rem] after:h-5 after:w-5 after:rounded-full after:border-none after:bg-neutral-100 dark:after:bg-neutral-400 after:shadow-[0_0px_3px_0_rgb(0_0_0_/_7%),_0_2px_2px_0_rgb(0_0_0_/_4%)] after:transition-[background-color_0.2s,transform_0.2s] after:content-[''] checked:bg-primary dark:checked:bg-primary checked:after:absolute checked:after:z-[2] checked:after:-mt-[3px] checked:after:ml-[1.0625rem] checked:after:h-5 checked:after:w-5 checked:after:rounded-full checked:after:border-none checked:after:bg-primary dark:checked:after:bg-primary checked:after:shadow-[0_3px_1px_-2px_rgba(0,0,0,0.2),_0_2px_2px_0_rgba(0,0,0,0.14),_0_1px_5px_0_rgba(0,0,0,0.12)] checked:after:transition-[background-color_0.2s,transform_0.2s] checked:after:content-[''] hover:cursor-pointer focus:before:scale-100 focus:before:opacity-[0.12] focus:before:shadow-[3px_-1px_0px_13px_rgba(0,0,0,0.6)] focus:before:transition-[box-shadow_0.2s,transform_0.2s] focus:after:absolute focus:after:z-[1] focus:after:block focus:after:h-5 focus:after:w-5 focus:after:rounded-full focus:after:content-[''] checked:focus:border-primary checked:focus:bg-primary checked:focus:before:ml-[1.0625rem] checked:focus:before:scale-100 checked:focus:before:shadow-[3px_-1px_0px_13px_#3b71ca] checked:focus:before:transition-[box-shadow_0.2s,transform_0.2s]"
+              type="checkbox"
+              role="switch"
+              id="EnableButtonBinder"
+              checked />
             </div>
+                <div class="py-4">
+                  <div class="input-container collapsed">
+                    <div id="set-one" class="py-1">
+                      <input class="placeholder-gray-300 px-5 py-2 font-semibold text-black border border-b-4 border-r-4 border-black rounded-lg shadow-lg focus:underline decoration-solid" type="text" id="button1" name="bindset1" placeholder="Button text"/>
+                      <input class="placeholder-gray-300 px-5 py-2 font-semibold text-black border border-b-4 border-r-4 border-black rounded-lg shadow-lg focus:underline decoration-solid" type="text" id="binding1" name="bindset1" placeholder="Your binding" />
+                    </div>
+                    <div id="set-two" class="py-1">
+                      <input class="placeholder-gray-300 px-5 py-2 font-semibold text-black border border-b-4 border-r-4 border-black rounded-lg shadow-lg focus:underline decoration-solid" type="text" id="button2" name="bindset2" placeholder="Button text"/>   
+                      <input class="placeholder-gray-300 px-5 py-2 font-semibold text-black border border-b-4 border-r-4 border-black rounded-lg shadow-lg focus:underline decoration-solid" type="text" id="binding2" name="bindset2" placeholder="Your binding" />
+                    </div>
+                    <div id="set-three" class="py-1">
+                      <input class="placeholder-gray-300 px-5 py-2 font-semibold text-black border border-b-4 border-r-4 border-black rounded-lg shadow-lg focus:underline decoration-solid" type="text" id="button3" name="bindset3" placeholder="Button text"/>    
+                      <input class="placeholder-gray-300 px-5 py-2 font-semibold text-black border border-b-4 border-r-4 border-black rounded-lg shadow-lg focus:underline decoration-solid" type="text" id="binding3" name="bindset3" placeholder="Your binding" /> 
+                    </div>
+                    <div id="set-four" class="py-1">
+                      <input class="placeholder-gray-300 px-5 py-2 font-semibold text-black border border-b-4 border-r-4 border-black rounded-lg shadow-lg focus:underline decoration-solid" type="text" id="button4" name="bindset4" placeholder="Button text"/>     
+                      <input class="placeholder-gray-300 px-5 py-2 font-semibold text-black border border-b-4 border-r-4 border-black rounded-lg shadow-lg focus:underline decoration-solid" type="text" id="binding4" name="bindset4" placeholder="Your binding" />  
+                    </div>
+                    <div id="set-five" class="py-1">
+                      <input class="placeholder-gray-300 px-5 py-2 font-semibold text-black border border-b-4 border-r-4 border-black rounded-lg shadow-lg focus:underline decoration-solid" type="text" id="button5" name="bindset5" placeholder="Button text"/>      
+                      <input class="placeholder-gray-300 px-5 py-2 font-semibold text-black border border-b-4 border-r-4 border-black rounded-lg shadow-lg focus:underline decoration-solid" type="text" id="binding5" name="bindset5" placeholder="Your binding" />   
+                    </div>
+                    <div id="set-six" class="py-1">
+                      <input class="placeholder-gray-300 px-5 py-2 font-semibold text-black border border-b-4 border-r-4 border-black rounded-lg shadow-lg focus:underline decoration-solid" type="text" id="button6" name="bindset6" placeholder="Button text"/>       
+                      <input class="placeholder-gray-300 px-5 py-2 font-semibold text-black border border-b-4 border-r-4 border-black rounded-lg shadow-lg focus:underline decoration-solid" type="text" id="binding6" name="bindset6" placeholder="Your binding" />    
+                    </div >
+                    <div id="set-seven" class="py-1">
+                      <input class="placeholder-gray-300 px-5 py-2 font-semibold text-black border border-b-4 border-r-4 border-black rounded-lg shadow-lg focus:underline decoration-solid" type="text" id="button7" name="bindset7" placeholder="Button text"/>        
+                      <input class="placeholder-gray-300 px-5 py-2 font-semibold text-black border border-b-4 border-r-4 border-black rounded-lg shadow-lg focus:underline decoration-solid" type="text" id="binding7" name="bindset7" placeholder="Your binding" />     
+                    </div>
+                    <div id="set-eight" class="py-1">
+                      <input class="placeholder-gray-300 px-5 py-2 font-semibold text-black border border-b-4 border-r-4 border-black rounded-lg shadow-lg focus:underline decoration-solid" type="text" id="button8" name="bindset8" placeholder="Button text"/>         
+                      <input class="placeholder-gray-300 px-5 py-2 font-semibold text-black border border-b-4 border-r-4 border-black rounded-lg shadow-lg focus:underline decoration-solid" type="text" id="binding8" name="bindset8" placeholder="Your binding" />      
+                    </div>
+
+
+                  </div>
+                </div>
         </div>
       </div>
 
@@ -118,7 +112,6 @@
           class="group relative flex w-full items-center rounded-none border-0 bg-white py-4 px-5 text-left text-base text-neutral-800 transition [overflow-anchor:none] hover:z-[2] focus:z-[3] focus:outline-none dark:bg-neutral-800 dark:text-white [&:not([data-te-collapse-collapsed])]:bg-white [&:not([data-te-collapse-collapsed])]:text-primary [&:not([data-te-collapse-collapsed])]:[box-shadow:inset_0_-1px_0_rgba(229,231,235)] dark:[&:not([data-te-collapse-collapsed])]:bg-neutral-800 dark:[&:not([data-te-collapse-collapsed])]:text-primary-400 dark:[&:not([data-te-collapse-collapsed])]:[box-shadow:inset_0_-1px_0_rgba(75,85,99)]"
           type="button"
           data-te-collapse-init
-          data-te-collapse-collapsed
           data-te-target="#flush-collapseThree"
           aria-expanded="false"
           aria-controls="flush-collapseThree">
@@ -142,8 +135,9 @@
       </h2>
       <div
         id="flush-collapseThree"
-        class="!visible hidden"
+        class="!visible"
         data-te-collapse-item
+        data-te-collapse-show
         aria-labelledby="flush-headingThree"
         data-te-parent="#accordionFlushExample">
         <div class="py-4 px-5">
@@ -159,36 +153,32 @@
             class="mt-[0.3rem] mr-2 h-3.5 w-8 appearance-none rounded-[0.4375rem] bg-neutral-300 dark:bg-neutral-600 before:pointer-events-none before:absolute before:h-3.5 before:w-3.5 before:rounded-full before:bg-transparent before:content-[''] after:absolute after:z-[2] after:-mt-[0.1875rem] after:h-5 after:w-5 after:rounded-full after:border-none after:bg-neutral-100 dark:after:bg-neutral-400 after:shadow-[0_0px_3px_0_rgb(0_0_0_/_7%),_0_2px_2px_0_rgb(0_0_0_/_4%)] after:transition-[background-color_0.2s,transform_0.2s] after:content-[''] checked:bg-primary dark:checked:bg-primary checked:after:absolute checked:after:z-[2] checked:after:-mt-[3px] checked:after:ml-[1.0625rem] checked:after:h-5 checked:after:w-5 checked:after:rounded-full checked:after:border-none checked:after:bg-primary dark:checked:after:bg-primary checked:after:shadow-[0_3px_1px_-2px_rgba(0,0,0,0.2),_0_2px_2px_0_rgba(0,0,0,0.14),_0_1px_5px_0_rgba(0,0,0,0.12)] checked:after:transition-[background-color_0.2s,transform_0.2s] checked:after:content-[''] hover:cursor-pointer focus:before:scale-100 focus:before:opacity-[0.12] focus:before:shadow-[3px_-1px_0px_13px_rgba(0,0,0,0.6)] focus:before:transition-[box-shadow_0.2s,transform_0.2s] focus:after:absolute focus:after:z-[1] focus:after:block focus:after:h-5 focus:after:w-5 focus:after:rounded-full focus:after:content-[''] checked:focus:border-primary checked:focus:bg-primary checked:focus:before:ml-[1.0625rem] checked:focus:before:scale-100 checked:focus:before:shadow-[3px_-1px_0px_13px_#3b71ca] checked:focus:before:transition-[box-shadow_0.2s,transform_0.2s]"
             type="checkbox"
             role="switch"
-            id="EnableJumpKey"/>
+            id="EnableJumpKey"
+            checked />
           </div>
 
 
-<div class="py-4">
-  <label for="jumpKeySelect" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Jump Key</label>
-  <div class="relative">
-    <select id="jumpKeySelect" class="appearance-none h-10 w-full border border-gray-400 rounded-lg py-2 px-4 bg-white font-medium text-gray-700 focus:outline-none focus:shadow-outline" data-te-select-init>
-      <option value="ctrl" selected>Ctrl</option>
-      <option value="alt">Alt</option>
-      <option value="shift">Shift</option>
-      <option value="option">Option</option>
-      <option value="cmd">Cmd</option>
-    </select>
-    <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-      <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293, 12.293, 5. 857, 8. 714a. 928. 928, 0, 1, 1, 1. 313-1. 313l3. 535, 3. 535, 7. 071-7. 071a. 928. 928, 0, 1, 1, 1. 313, 1. 313Z"/></svg>
-    </div>
-  </div>
-</div>
-
-
-              <div class="py-3">
-                <button class="px-5 py-2 font-semibold bg-white border border-b-4 border-r-4 border-black rounded-lg hover:text-white hover:shadow-[inset_13rem_0_0_0] hover:shadow-black duration-[400ms, 700ms] hover:white duration-[1000ms,500ms] hover:border-white transition-[color,box-shadow, border] active:bg-gray-300" type="submit" id="saveButton" name="save">
-                  Save 
-                </button>
+              <div class="py-4">
+                <label for="jumpKeySelect" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Jump Key</label>
+                <select id="jumpKeySelect" class="placeholder-gray-300 px-5 py-2 font-semibold text-black border border-b-4 border-r-4 border-black rounded-lg shadow-lg decoration-solid" data-te-select-init>
+                  <option value="ctrl" selected>Ctrl</option>
+                  <option value="alt">Alt</option>
+                  <option value="shift">Shift</option>
+                  <option value="option">Option</option>
+                  <option value="cmd">Cmd</option>
+                </select>
               </div>
+
+
 
         </div>
       </div>
     </div>
+    </div>
+    <div class="py-3">
+      <button class="px-5 py-2 font-semibold bg-white border border-b-4 border-r-4 border-black rounded-lg hover:text-white hover:shadow-[inset_13rem_0_0_0] hover:shadow-black duration-[400ms, 700ms] hover:white duration-[1000ms,500ms] hover:border-white transition-[color,box-shadow, border] active:bg-gray-300" type="submit" id="saveButton" name="save">
+        Save 
+      </button>
     </div>
 
           </form>

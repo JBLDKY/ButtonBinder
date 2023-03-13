@@ -37,8 +37,7 @@ function toObject(bindings) {
   }
   return userKeybindings;
 }
-  // Add the jump key option to the userKeybindings object
-
+// Add the jump key option to the userKeybindings object
 
 function saveHandler(event) {
   /**
@@ -55,12 +54,17 @@ function saveHandler(event) {
   const userKeybindings = toObject(bindings);
   const jumpKey = document.querySelector("#jumpKeySelect").value;
 
+  const enabled = {
+    buttonbinder: document.querySelector("#EnableButtonBinder").checked,
+    jumpkey: document.querySelector("#EnableJumpKey").checked,
+  };
+  console.log(enabled);
 
   chrome.storage.sync.set({
     keybindings: userKeybindings,
     jumpKey: jumpKey,
+    enabled: enabled,
   });
-
 
   // prevents an ugly graphical abberration, probably caused by some redirect
   event.preventDefault();
@@ -73,11 +77,17 @@ function restoreOptions() {
    *
    **/
 
-  let gettingItem = chrome.storage.sync.get(["keybindings", "jumpKey"]);
+  let gettingItem = chrome.storage.sync.get([
+    "keybindings",
+    "jumpKey",
+    "enabled",
+  ]);
 
   gettingItem.then((res) => {
     const userKeybindings = res.keybindings;
     const jumpKey = res.jumpKey;
+    const enabled = res.enabled;
+    console.log(enabled);
 
     const bindSetsNames = Object.keys(userKeybindings);
 
@@ -97,6 +107,11 @@ function restoreOptions() {
     });
 
     document.querySelector("#jumpKeySelect").value = jumpKey;
+    console.log(enabled);
+    document.querySelector("#EnableButtonBinder").checked =
+      enabled.buttonbinder;
+    document.querySelector("#EnableJumpKey").checked = enabled.jumpkey;
+
     // after user settings are loaded, hide the unused divs
     dynamicInputFields();
   });
@@ -140,10 +155,8 @@ function addOnChangeListener() {
   });
 }
 
-
-
 //
-  //
+//
 // document.addEventListener("DOMContentLoaded", () => {
 //   const toggleBtns = document.querySelectorAll(".toggle-btn");
 //
@@ -160,7 +173,6 @@ function addOnChangeListener() {
 //   });
 // });
 //
-
 
 // const collapseElement = document.querySelector("[data-te-target='#flush-collapseOne']");
 // const collapseInstance = new Collapse(collapseElement);

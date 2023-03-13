@@ -4,6 +4,9 @@
   "version": "1.2",
   "description": "Bind buttons to keyboard shortcuts!",
   "options_page": "options.html",
+  "background": {
+    "service_worker": "background.js"
+  },
   "content_scripts": [
     {
       "js": ["jquery.min.js", "submitter.js", "options.js"],
